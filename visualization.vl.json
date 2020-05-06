@@ -1,0 +1,111 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "description": "Basketball Team's SRS 1980-2020",
+  "width": 1000,
+  "height": 500,
+  "padding": 5,
+  "data": {
+    "url": "https://raw.githubusercontent.com/bobbyknndy/basketball/master/Basketball.csv"
+  },
+  "encoding": {
+    "color": {
+      "condition": {
+        "selection": "hover",
+        "field": "Team",
+        "type": "nominal",
+        "legend": null
+      },
+      "value": "grey"
+    },
+    "opacity": {
+      "condition": {
+        "selection": "hover",
+        "value": 1
+      },
+      "value": 0.2
+    }
+  },
+  "layer": [
+    {
+      "encoding": {
+        "x": {
+          "field": "Season",
+          "type": "temporal",
+          "title": "Season"
+        },
+        "y": {
+          "field": "SRS",
+          "type": "quantitative",
+          "title": "SRS"
+        }
+      },
+      "layer": [
+        {
+          "description": "transparent layer to make it easier to trigger selection",
+          "selection": {
+            "hover": {
+              "type": "single",
+              "on": "mouseover",
+              "empty": "all",
+              "fields": [
+                "Team"
+              ],
+              "init": {
+                "Team": "Bulls"
+              }
+            }
+          },
+          "mark": {
+            "type": "line",
+            "strokeWidth": 8,
+            "stroke": "transparent"
+          }
+        },
+        {
+          "mark": "line"
+        }
+      ]
+    },
+    {
+      "encoding": {
+        "x": {
+          "aggregate": "max",
+          "field": "Season",
+          "type": "temporal"
+        },
+        "y": {
+          "aggregate": {
+            "argmax": "Season"
+          },
+          "field": "SRS",
+          "type": "quantitative"
+        }
+      },
+      "layer": [
+        {
+          "mark": {
+            "type": "circle"
+          }
+        },
+        {
+          "mark": {
+            "type": "text",
+            "align": "left",
+            "dx": 4
+          },
+          "encoding": {
+            "text": {
+              "field": "Team",
+              "type": "nominal"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "config": {
+    "view": {
+      "stroke": null
+    }
+  }
+}
